@@ -8,6 +8,7 @@ interface QuestionForm {
 
 export default function QuestionForm({ socket }: QuestionForm) {
   const [question, setQuestion] = useState("");
+  const [awnswers, setAnswers] = useState<string[]>();
   const [qrlink, setQrlink] = useState("");
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -16,21 +17,25 @@ export default function QuestionForm({ socket }: QuestionForm) {
   };
 
   useEffect(() => {
-    socket?.on(
-      QUESTION_EMIT,
-      ({
+    const createNewQuestion = () => {
+      return ({
         question,
         questionKey,
       }: {
         question: string;
         questionKey: string;
       }) => {
-        console.log("question===>", question);
+        const link = `https://localhost:3000/answer?questionid=${questionKey}`;
+        console.log("link===>", link);
+        setQrlink(link);
+      };
+    };
+    const updateAnswerCloud = (answers: string[]) => {
+      setAnswers(answers);
+    };
 
-        setQrlink(`https://localhost:3000/answer?questionid=${questionKey}`);
-      }
-    );
-    socket?.on(ANSWER_EMIT, () => {});
+    socket?.on(QUESTION_EMIT, createNewQuestion);
+    socket?.on(ANSWER_EMIT, updateAnswerCloud);
     return () => {
       socket?.off(QUESTION_EMIT);
       socket?.off(ANSWER_EMIT);

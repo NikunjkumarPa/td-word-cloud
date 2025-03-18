@@ -1,12 +1,11 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
 import cloud from "d3-cloud";
 
-const getWordFrequency = (words: string[]) => {
-  return words.reduce((acc, word) => {
+const getWordFrequency = (words: string[] = []) => {
+  return words?.reduce((acc, word) => {
     acc[word] = (acc[word] || 0) + 1;
     return acc;
   }, {} as Record<string, number>);

@@ -5,7 +5,7 @@ import Redis from "ioredis";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
-const port = Number(process.env.SERVER_PORT) || 3000;
+const port = 3000;
 console.log("process.env.process.env.NODE_ENV====>", process.env.NODE_ENV);
 console.log("process.env.SERVER_PORT====>", process.env.SERVER_PORT);
 

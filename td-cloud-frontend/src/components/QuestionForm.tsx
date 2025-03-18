@@ -1,6 +1,12 @@
 "use client";
 
-import { ANSWER_EMIT, QUESTION_EMIT, QUESTION_EVENT } from "@/util/constant";
+import {
+  ANSWER_EMIT,
+  QR_LINK,
+  QUESTION_EMIT,
+  QUESTION_EVENT,
+  SERVER_URL,
+} from "@/util/constant";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 import WordCloud from "./WordCloud";
@@ -23,20 +29,23 @@ export default function QuestionForm({ socket }: QuestionForm) {
   };
 
   useEffect(() => {
-    const interval = setInterval(async () => {
-      try {
-        console.log("qrlink", qrlink);
-        const endpointAllAnswers =
-          "http://localhost:4001/getAnswers?" + qrlink.split("?")[1];
-        if (!qrlink) return;
-        const response = await fetch(endpointAllAnswers);
-        const data = await response.json();
-        setAnswers(data?.answers);
-      } catch (error) {
-        console.error("Error fetching answers:", error);
-      }
-    }, 5000);
-    return () => clearInterval(interval);
+    if (!qrlink) return;
+    // const interval = setInterval(async () => {
+    //   try {
+    //     console.log("qrlink", qrlink);
+    //     const endpointAllAnswers =
+    //       SERVER_URL + "getAnswers?" + qrlink.split("?")[1];
+    //     const response = await fetch(endpointAllAnswers).then((json) =>
+    //       json.json()
+    //     );
+    //     console.log("response===>", response);
+
+    //     // setAnswers(data?.allAnswers);
+    //   } catch (error) {
+    //     console.error("Error fetching answers:", error);
+    //   }
+    // }, 5000);
+    // return () => clearInterval(interval);
   }, [qrlink]);
 
   useEffect(() => {
@@ -46,7 +55,7 @@ export default function QuestionForm({ socket }: QuestionForm) {
       question: string;
       queKey: string;
     }) => {
-      const link = `http://localhost:3000/answer?questionid=${queKey}`;
+      const link = QR_LINK + queKey;
       console.log("link:\n", link);
       setQrlink(link);
       setIsLoading(false);
@@ -65,19 +74,6 @@ export default function QuestionForm({ socket }: QuestionForm) {
       socket?.off(ANSWER_EMIT);
     };
   }, [socket]);
-
-  const words = [
-    "React",
-    "JavaScript",
-    "Next.js",
-    "TypeScript",
-    "D3.js",
-    "Frontend",
-    "GraphQL",
-    "Node.js",
-    "Web Development",
-    "CSS",
-  ];
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">

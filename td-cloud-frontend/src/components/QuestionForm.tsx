@@ -8,7 +8,7 @@ interface QuestionForm {
 
 export default function QuestionForm({ socket }: QuestionForm) {
   const [question, setQuestion] = useState("");
-  const [awnswers, setAnswers] = useState<string[]>();
+  const [answers] = useState<string[]>();
   const [qrlink, setQrlink] = useState("");
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -17,21 +17,22 @@ export default function QuestionForm({ socket }: QuestionForm) {
   };
 
   useEffect(() => {
-    const createNewQuestion = () => {
-      return ({
-        question,
-        questionKey,
-      }: {
-        question: string;
-        questionKey: string;
-      }) => {
-        const link = `https://localhost:3000/answer?questionid=${questionKey}`;
-        console.log("link===>", link);
-        setQrlink(link);
-      };
+    const createNewQuestion = ({
+      queKey,
+    }: {
+      question: string;
+      queKey: string;
+    }) => {
+      const link = `http://localhost:3000/answer?questionid=${queKey}`;
+      console.log("link:\n", link);
+
+      setQrlink(link);
     };
-    const updateAnswerCloud = (answers: string[]) => {
-      setAnswers(answers);
+    const updateAnswerCloud = (allAnswers: string[]) => {
+      console.log("updateAnswerCloud.......");
+
+      console.log("allAnswers===>", allAnswers);
+      // setAnswers(allAnswers);
     };
 
     socket?.on(QUESTION_EMIT, createNewQuestion);
@@ -40,7 +41,6 @@ export default function QuestionForm({ socket }: QuestionForm) {
       socket?.off(QUESTION_EMIT);
       socket?.off(ANSWER_EMIT);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   });
 
   return (
@@ -55,7 +55,12 @@ export default function QuestionForm({ socket }: QuestionForm) {
       <button type="submit" className="mt-2 p-2 bg-blue-500 text-white">
         Create Question
       </button>
-      <QRCode size={150} value={qrlink} />
+      <ol>
+        {answers?.map((word) => (
+          <li key={"word" + Math.random()}>{word}</li>
+        ))}
+      </ol>
+      {qrlink && <QRCode size={150} value={qrlink} />}
     </form>
   );
 }

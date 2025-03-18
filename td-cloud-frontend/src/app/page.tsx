@@ -1,13 +1,27 @@
 "use client";
 import MultiStepForm from "@/components/MultiStepForm";
 import QuestionForm from "@/components/QuestionForm";
-import { useState } from "react";
+import useSessionStorage from "@/hooks/useSessionStorage";
+import { SESSION_IS_MULTISTEP_PROCESS_DONE } from "@/util/constant";
+import { Suspense, useEffect, useState } from "react";
 import io from "socket.io-client";
 
 const socket = io("http://localhost:4001");
 
 export default function Home() {
-  const [dashboardVisible, setDashboardVisible] = useState(false);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [isMultiStepProcessDone, _] = useSessionStorage(
+    SESSION_IS_MULTISTEP_PROCESS_DONE,
+    "false"
+  );
+
+  const [dashboardVisible, setDashboardVisible] = useState(
+    isMultiStepProcessDone === "true"
+  );
+
+  useEffect(() => {
+    setDashboardVisible(isMultiStepProcessDone === "true");
+  }, [isMultiStepProcessDone]);
 
   return dashboardVisible ? (
     <QuestionForm socket={socket} />

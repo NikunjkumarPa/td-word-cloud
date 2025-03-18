@@ -1,20 +1,45 @@
 "use client";
-import React, { useState } from "react";
+import {
+  ANSWER_EVENT,
+  ASK_QUESTION_EVENT,
+  QUESTION_ASKED_EMIT,
+} from "@/util/constant";
+import React, { useEffect, useState } from "react";
+
+import io from "socket.io-client";
+
+const socket = io("http://localhost:4001");
 
 const AnswerForm: React.FC = () => {
+  const [question, setQuestion] = useState<string>("");
   const [input1, setInput1] = useState<string>("");
   const [input2, setInput2] = useState<string>("");
   const [input3, setInput3] = useState<string>("");
 
+  useEffect(() => {
+    socket.emit(ASK_QUESTION_EVENT);
+    return () => {};
+  });
+  useEffect(() => {
+    socket.on(QUESTION_ASKED_EMIT, (question: string) => {
+      setQuestion(question);
+    });
+    return () => {
+      socket.off(QUESTION_ASKED_EMIT);
+    };
+  });
+
   const handleSubmit = () => {
-    console.log("Submitted values:", { input1, input2, input3 });
-    setInput1("");
-    setInput2("");
-    setInput3("");
+    // console.log("Submitted values:", { input1, input2, input3 });
+    // setInput1("");
+    // setInput2("");
+    // setInput3("");
+
+    socket.emit(ANSWER_EVENT, [input1, input2, input3]);
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen ">
+    <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-3xl">
         {/* Logo */}
         <div className="mb-6">
@@ -23,13 +48,11 @@ const AnswerForm: React.FC = () => {
               <div className="absolute bottom-0 left-0 w-10 h-8 bg-red-400 rounded-tl-md"></div>
               <div className="absolute top-0 right-0 w-10 h-12 bg-blue-500 rounded-br-md"></div>
             </div>
-            <span className="text-4xl font-bold ml-2">Mentimeter</span>
+            <span className="text-4xl font-bold ml-2">TD Cloud</span>
           </div>
         </div>
-
         {/* Question */}
-        <h1 className="text-4xl font-bold mb-8">Why did you Join Tech Data</h1>
-
+        <h1 className="text-4xl font-bold mb-8">{question}</h1>
         <div>
           <div className="mb-4">
             <div className="relative">

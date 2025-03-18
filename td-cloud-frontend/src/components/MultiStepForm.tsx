@@ -1,3 +1,5 @@
+import useSessionStorage from "@/hooks/useSessionStorage";
+import { SESSION_IS_MULTISTEP_PROCESS_DONE } from "@/util/constant";
 import React, { useState } from "react";
 
 interface MultStepForm {
@@ -9,10 +11,16 @@ const MultiStepForm = ({ gotoDashboard }: MultStepForm) => {
   const [selection1, setSelection1] = useState("");
   const [selection2, setSelection2] = useState("");
   const [selection3, setSelection3] = useState("");
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [_, setIsMultStepProcessDone] = useSessionStorage(
+    SESSION_IS_MULTISTEP_PROCESS_DONE,
+    "false"
+  );
 
   const nextStep = () => {
     setStep(step + 1);
     if (step === 3) {
+      setIsMultStepProcessDone("true");
       gotoDashboard();
     }
   };

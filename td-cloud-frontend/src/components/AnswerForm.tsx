@@ -1,31 +1,36 @@
 "use client";
+import { socket } from "@/socket";
 import {
   ANSWER_EVENT,
   ASK_QUESTION_EVENT,
   QUESTION_ASKED_EMIT,
 } from "@/util/constant";
+import { useSearchParams } from "next/navigation";
 import React, { useEffect, useState } from "react";
 
-import io from "socket.io-client";
+// import io from "socket.io-client";
 
-const socket = io("http://localhost:4001");
+// const socket = io("http://localhost:4001");
 
-const AnswerForm: React.FC = () => {
+const AnswerForm = () => {
+  const questionid = useSearchParams().get("questionid");
+
   const [question, setQuestion] = useState<string>("");
   const [input1, setInput1] = useState<string>("");
   const [input2, setInput2] = useState<string>("");
   const [input3, setInput3] = useState<string>("");
 
   useEffect(() => {
-    socket.emit(ASK_QUESTION_EVENT);
-    return () => {};
-  });
+    socket?.emit(ASK_QUESTION_EVENT, questionid);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   useEffect(() => {
-    socket.on(QUESTION_ASKED_EMIT, (question: string) => {
+    socket?.on(QUESTION_ASKED_EMIT, (question: string) => {
       setQuestion(question);
     });
     return () => {
-      socket.off(QUESTION_ASKED_EMIT);
+      socket?.off(QUESTION_ASKED_EMIT);
     };
   });
 
@@ -35,7 +40,7 @@ const AnswerForm: React.FC = () => {
     // setInput2("");
     // setInput3("");
 
-    socket.emit(ANSWER_EVENT, [input1, input2, input3]);
+    socket?.emit(ANSWER_EVENT, [input1, input2, input3]);
   };
 
   return (

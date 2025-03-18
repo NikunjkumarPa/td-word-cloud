@@ -66,7 +66,7 @@ io.on(connection, (socket) => {
     );
     socket.emit(
       ANSWER_EMIT,
-      allAnswers.flatMap((_) => allAnswers.flatMap((_ans) => JSON.parse(_ans)))
+      allAnswers.flatMap((_ans) => JSON.parse(_ans))
     );
   });
 

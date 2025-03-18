@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
 interface QuestionForm {
-  socket?: SocketIOClient.Socket;
+  socket?: SocketIOClient.Socket | undefined;
 }
 
 export default function QuestionForm({ socket }: QuestionForm) {

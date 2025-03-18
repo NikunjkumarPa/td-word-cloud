@@ -24,19 +24,19 @@ export default function QuestionForm({ socket }: QuestionForm) {
   useEffect(() => {
     const interval = setInterval(async () => {
       try {
+        console.log("qrlink", qrlink);
+        const endpointAllAnswers =
+          "http://localhost:4001/getAnswers?" + qrlink.split("?")[1];
         if (!qrlink) return;
-        const response = await fetch("http://localhost:3000/getAnswers");
+        const response = await fetch(endpointAllAnswers);
         const data = await response.json();
-        setAnswers(data);
-        console.log(".....");
+        setAnswers(data?.answers);
       } catch (error) {
         console.error("Error fetching answers:", error);
       }
     }, 5000);
-
-    // Clear interval on component unmount
     return () => clearInterval(interval);
-  }, []);
+  }, [qrlink]);
 
   useEffect(() => {
     const createNewQuestion = ({
@@ -64,10 +64,6 @@ export default function QuestionForm({ socket }: QuestionForm) {
       socket?.off(ANSWER_EMIT);
     };
   }, [socket]);
-
-  console.log("====================================");
-  console.log(answers);
-  console.log("====================================");
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">

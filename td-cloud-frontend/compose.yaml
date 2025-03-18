@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile
     container_name: td-cloud
     ports:
-      - "3000:3000"
+      - "4000:4000"
     volumes:
       - .:/app
       - /app/node_modules

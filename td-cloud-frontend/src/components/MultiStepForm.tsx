@@ -225,10 +225,10 @@ const MultiStepForm = ({ gotoDashboard }: MultiStepForm) => {
                 </svg>
               </div>
               <h1 className="text-4xl font-normal text-gray-700 mb-6 text-center">
-                You're all set!
+                You are all set!
               </h1>
               <p className="text-lg text-gray-600 mb-8 text-center">
-                Your TD Cloud setup is complete. Let's get started!
+                Your TD Cloud setup is complete. Let us get started!
               </p>
               <button
                 onClick={gotoDashboard}

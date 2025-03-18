@@ -48,7 +48,7 @@ const AnswerForm = () => {
     );
 
     console.log("Submitting answers:", answers);
-    socket?.emit(ANSWER_EVENT, answers);
+    socket?.emit(ANSWER_EVENT, answers, questionid);
     setSubmitted(true);
   };
 

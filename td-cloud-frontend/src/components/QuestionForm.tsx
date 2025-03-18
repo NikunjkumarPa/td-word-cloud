@@ -3,6 +3,7 @@
 import { ANSWER_EMIT, QUESTION_EMIT, QUESTION_EVENT } from "@/util/constant";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
+import WordCloud from "./WordCloud";
 
 interface QuestionForm {
   socket?: SocketIOClient.Socket; // Changed from SocketIOClient.Socket for compatibility
@@ -65,6 +66,19 @@ export default function QuestionForm({ socket }: QuestionForm) {
     };
   }, [socket]);
 
+  const words = [
+    "React",
+    "JavaScript",
+    "Next.js",
+    "TypeScript",
+    "D3.js",
+    "Frontend",
+    "GraphQL",
+    "Node.js",
+    "Web Development",
+    "CSS",
+  ];
+
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-3xl">
@@ -122,7 +136,7 @@ export default function QuestionForm({ socket }: QuestionForm) {
             </p>
           </div>
         )}
-
+        <WordCloud wordsArray={answers} />
         {answers && answers.length > 0 && (
           <div className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Answers</h2>

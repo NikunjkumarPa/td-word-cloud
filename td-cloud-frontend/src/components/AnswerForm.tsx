@@ -65,7 +65,6 @@ const AnswerForm = () => {
             <span className="text-4xl font-bold ml-2">TD Cloud</span>
           </div>
         </div>
-
         {submitted ? (
           <div className="text-center py-8">
             <div className="w-20 h-20 bg-green-100 rounded-full mx-auto flex items-center justify-center mb-6">

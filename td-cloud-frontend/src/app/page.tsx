@@ -4,7 +4,8 @@ import QuestionForm from "@/components/QuestionForm";
 import useSessionStorage from "@/hooks/useSessionStorage";
 import { socket } from "@/socket";
 import { SESSION_IS_MULTISTEP_PROCESS_DONE } from "@/util/constant";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
+
 // import io from "socket.io-client";
 
 // const socket = io("http://localhost:4001");
@@ -24,15 +25,19 @@ export default function Home() {
     setDashboardVisible(isMultiStepProcessDone === "true");
   }, [isMultiStepProcessDone]);
 
-  return dashboardVisible ? (
-    <QuestionForm socket={socket} />
-  ) : (
-    <MultiStepForm
-      gotoDashboard={() => {
-        setTimeout(() => {
-          setDashboardVisible(true);
-        }, 3000);
-      }}
-    />
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      {dashboardVisible ? (
+        <QuestionForm socket={socket} />
+      ) : (
+        <MultiStepForm
+          gotoDashboard={() => {
+            setTimeout(() => {
+              setDashboardVisible(true);
+            }, 3000);
+          }}
+        />
+      )}
+    </Suspense>
   );
 }

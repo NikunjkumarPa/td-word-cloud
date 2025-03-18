@@ -50,7 +50,7 @@ io.on(connection, (socket) => {
     const queKey = getQuestionKey(questionId);
 
     // Store the question
-    await redis.set(queKey, question);
+    await redis.rpush(queKey, question);
     console.log(`Question created: ${queKey} - ${question}`);
 
     // Emit to client
@@ -70,7 +70,7 @@ io.on(connection, (socket) => {
     const queKey = getQuestionKey(id);
 
     // Get the question
-    const question = await redis.get(queKey);
+    const question = await redis.lrange(queKey, 0, 0);
     console.log(`Retrieved question: ${queKey} - ${question}`);
 
     // Emit the question to the client
@@ -87,7 +87,7 @@ io.on(connection, (socket) => {
 
     // Get the current question ID
     const currentQuestionId = await redis.get(QUESTION_INDEX);
-    const answerKey = getAnswerKey(currentQuestionId);
+    const answerKey = getQuestionKey(currentQuestionId);
 
     // Store the answers
     for (const answer of answers) {
@@ -97,7 +97,7 @@ io.on(connection, (socket) => {
     }
 
     // Get all answers for this question
-    const allAnswers = await redis.lrange(answerKey, 0, -1);
+    const allAnswers = await redis.lrange(answerKey, 1, -1);
     console.log(`All answers for ${answerKey}: ${allAnswers}`);
 
     // Emit all answers to the client
@@ -125,9 +125,9 @@ io.on(connection, (socket) => {
 
 app.get("/getAnswers", async (req, res) => {
   const questionId = req.query.questionId || (await redis.get(QUESTION_INDEX));
-  const answerKey = getAnswerKey(questionId);
+  const answerKey = getQuestionKey(questionId);
 
-  const allAnswers = await redis.lrange(answerKey, 0, -1);
+  const allAnswers = await redis.lrange(answerKey, 1, -1);
 
   res.json({
     data: allAnswers,

@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
 
 interface QuestionForm {
-  socket?: any; // Changed from SocketIOClient.Socket for compatibility
+  socket?: SocketIOClient.Socket; // Changed from SocketIOClient.Socket for compatibility
 }
 
 export default function QuestionForm({ socket }: QuestionForm) {
@@ -22,9 +22,25 @@ export default function QuestionForm({ socket }: QuestionForm) {
   };
 
   useEffect(() => {
+    const interval = setInterval(async () => {
+      try {
+        if (!qrlink) return;
+        const response = await fetch("http://localhost:3000/getAnswers");
+        const data = await response.json();
+        setAnswers(data);
+        console.log(".....");
+      } catch (error) {
+        console.error("Error fetching answers:", error);
+      }
+    }, 5000);
+
+    // Clear interval on component unmount
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
     const createNewQuestion = ({
       queKey,
-      question: questionText,
     }: {
       question: string;
       queKey: string;
@@ -33,19 +49,6 @@ export default function QuestionForm({ socket }: QuestionForm) {
       console.log("link:\n", link);
       setQrlink(link);
       setIsLoading(false);
-
-      const interval = setInterval(async () => {
-        try {
-          const response = await fetch("http://localhost:3000/getAnswers");
-          const data = await response.json();
-          setAnswers(data);
-        } catch (error) {
-          console.error("Error fetching answers:", error);
-        }
-      }, 5000);
-
-      // Clear interval on component unmount
-      return () => clearInterval(interval);
     };
 
     const updateAnswerCloud = (allAnswers: string[]) => {

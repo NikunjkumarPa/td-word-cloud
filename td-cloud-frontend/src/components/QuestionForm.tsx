@@ -2,10 +2,10 @@
 
 import {
   ANSWER_EMIT,
+  MAX_QUESTION_LENGTH,
   QR_LINK,
   QUESTION_EMIT,
   QUESTION_EVENT,
-  SERVER_URL,
 } from "@/util/constant";
 import { useEffect, useState } from "react";
 import QRCode from "react-qr-code";
@@ -104,11 +104,11 @@ export default function QuestionForm({ socket }: QuestionForm) {
                   value={question}
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="Enter your question"
-                  maxLength={100}
-                  className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500 pr-20"
+                  maxLength={MAX_QUESTION_LENGTH}
+                  className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <span className="absolute right-4 top-6 text-gray-500">
-                  {`${100 - question.length}/100`}
+                  {MAX_QUESTION_LENGTH - question.length}
                 </span>
               </div>
             </div>
@@ -142,7 +142,7 @@ export default function QuestionForm({ socket }: QuestionForm) {
             </div>
           </>
         )}
-        {answers.length > 0 && <WordCloudComponent words={answers} />}
+        {answers.length && <WordCloudComponent words={answers} />}
       </div>
     </div>
   );

@@ -3,10 +3,11 @@ import { socket } from "@/socket";
 import {
   ANSWER_EVENT,
   ASK_QUESTION_EVENT,
+  MAX_ANSWER_LENGTH,
   QUESTION_ASKED_EMIT,
 } from "@/util/constant";
-import { useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 
 const AnswerForm = () => {
   const questionid = useSearchParams().get("questionid");
@@ -15,6 +16,7 @@ const AnswerForm = () => {
   const [input2, setInput2] = useState<string>("");
   const [input3, setInput3] = useState<string>("");
   const [submitted, setSubmitted] = useState<boolean>(false);
+  const refreshPage = useRouter();
 
   useEffect(() => {
     // Only emit if questionid exists
@@ -51,12 +53,13 @@ const AnswerForm = () => {
     socket?.emit(ANSWER_EVENT, answers, questionid);
     setSubmitted(true);
   };
+  console.log("question", question);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-3xl">
         {/* Logo */}
-        <div className="mb-6">
+        <div className="mb-6 flex justify-between">
           <div className="flex items-center">
             <div className="w-14 h-14 relative">
               <div className="absolute bottom-0 left-0 w-10 h-8 bg-red-400 rounded-tl-md"></div>
@@ -64,6 +67,16 @@ const AnswerForm = () => {
             </div>
             <span className="text-4xl font-bold ml-2">TD Cloud</span>
           </div>
+          {!question.length ? (
+            <button
+              className="underline text-blue-500 font-semibold cursor-pointer text-2xl"
+              onClick={() => window.location.reload()}
+            >
+              Refresh
+            </button>
+          ) : (
+            <></>
+          )}
         </div>
         {submitted ? (
           <div className="text-center py-8">
@@ -98,11 +111,11 @@ const AnswerForm = () => {
                     placeholder="Enter a word"
                     value={input1}
                     onChange={(e) => setInput1(e.target.value)}
-                    maxLength={25}
+                    maxLength={MAX_ANSWER_LENGTH}
                     className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="absolute right-4 top-6 text-gray-500">
-                    {input1.length}/25
+                    {MAX_ANSWER_LENGTH - input1.length}
                   </span>
                 </div>
               </div>
@@ -114,11 +127,11 @@ const AnswerForm = () => {
                     placeholder="Enter another word"
                     value={input2}
                     onChange={(e) => setInput2(e.target.value)}
-                    maxLength={25}
+                    maxLength={MAX_ANSWER_LENGTH}
                     className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="absolute right-4 top-6 text-gray-500">
-                    {input2.length}/25
+                    {MAX_ANSWER_LENGTH - input2.length}
                   </span>
                 </div>
               </div>
@@ -130,11 +143,11 @@ const AnswerForm = () => {
                     placeholder="Enter another word"
                     value={input3}
                     onChange={(e) => setInput3(e.target.value)}
-                    maxLength={25}
+                    maxLength={MAX_ANSWER_LENGTH}
                     className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                   <span className="absolute right-4 top-6 text-gray-500">
-                    {input3.length}/25
+                    {MAX_ANSWER_LENGTH - input3.length}
                   </span>
                 </div>
               </div>
@@ -150,11 +163,9 @@ const AnswerForm = () => {
             </div>
           </>
         ) : (
-          <>
-            <h1 className="text-5xl font-semibold w-full animate-pulse">
-              Waiting for question...
-            </h1>
-          </>
+          <h1 className="text-3xl font-semibold w-full animate-pulse cursor-progress">
+            Waiting for question... try after some time...
+          </h1>
         )}
       </div>
     </div>

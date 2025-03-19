@@ -1,6 +1,6 @@
 import useSessionStorage from "@/hooks/useSessionStorage";
 import { SESSION_IS_MULTISTEP_PROCESS_DONE } from "@/util/constant";
-import React, { useState } from "react";
+import { useState } from "react";
 
 interface MultiStepForm {
   gotoDashboard: () => void;
@@ -19,7 +19,7 @@ const MultiStepForm = ({ gotoDashboard }: MultiStepForm) => {
 
   const nextStep = () => {
     setStep(step + 1);
-    if (step === 3) {
+    if (step === 4) {
       setIsMultiStepProcessDone("true");
       gotoDashboard();
     }

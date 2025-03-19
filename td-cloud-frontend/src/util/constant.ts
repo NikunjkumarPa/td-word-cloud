@@ -11,3 +11,6 @@ export const SESSION_IS_MULTISTEP_PROCESS_DONE = "isMultiStepProcessDone";
 
 export const SERVER_URL = process.env.SERVER_URL ?? "http://172.27.46.71:4001/";
 export const QR_LINK = "http://172.27.46.71:3000/answer?questionid=";
+
+export const MAX_QUESTION_LENGTH = 100;
+export const MAX_ANSWER_LENGTH = 25;

@@ -28,9 +28,7 @@ export default function Home() {
       ) : (
         <MultiStepForm
           gotoDashboard={() => {
-            setTimeout(() => {
-              setDashboardVisible(true);
-            }, 3000);
+            setDashboardVisible(true);
           }}
         />
       )}

@@ -9,3 +9,5 @@ export const THUMB_EVENT = "press_thumb";
 export const THUMB_EMIT = "thumb_pressed";
 export const SESSION_IS_MULTISTEP_PROCESS_DONE = "isMultiStepProcessDone";
 
+export const SERVER_URL = process.env.SERVER_URL ?? "http://172.27.46.71:4001/";
+export const QR_LINK = "http://172.27.46.71:3000/answer?questionid=";

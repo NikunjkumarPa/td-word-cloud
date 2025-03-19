@@ -16,7 +16,7 @@ const io = new Server(server, {
   },
 });
 
-const redis = new Redis(process.env.REDIS_URL || "redis://localhost:6379");
+const redis = new Redis(process.env.REDIS_URL || "redis://172.27.46.71:6379");
 
 //Socket: Event and Emitters
 const QUESTION_EVENT = "create_question";
@@ -77,18 +77,25 @@ io.on(connection, (socket) => {
     }
 
     // Store the answers
-    for (const answer of answers) {
-      if (answer && answer.trim() !== "") {
-        await redis.rpush(questionId, answer);
-      }
-    }
+    // for (const answer of answers) {
+    //   if (answer && answer.trim() !== "") {
+    //     await redis.rpush(questionId, answer);
+    //   }
+    // }
+
+    await redis.rpush(questionId, JSON.stringify(answers));
 
     // Get all answers for this question
     const allAnswers = await redis.lrange(questionId, 1, -1);
     console.log(`All answers for ${questionId}: ${allAnswers}`);
 
     // Emit all answers to the client
-    io.emit(ANSWER_EMIT, { allAnswers });
+    io.emit(
+      ANSWER_EMIT,
+      allAnswers.flatMap((_ans) => JSON.parse(_ans)),
+      questionId,
+      allAnswers.length
+    );
   });
 
   socket.on("get_answers", async (questionId) => {
@@ -109,10 +116,7 @@ io.on(connection, (socket) => {
 app.get("/getAnswers", async (req, res) => {
   const questionid = req.query.questionid;
   const allAnswers = await redis.lrange(questionid, 1, -1);
-  res.json({
-    answers: allAnswers,
-    questionid,
-  });
+  res.json({ allAnswers, questionid });
 });
 
 const PORT = process.env.SERVER_PORT || 4001;

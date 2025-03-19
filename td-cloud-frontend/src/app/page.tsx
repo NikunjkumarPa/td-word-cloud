@@ -6,10 +6,6 @@ import { socket } from "@/socket";
 import { SESSION_IS_MULTISTEP_PROCESS_DONE } from "@/util/constant";
 import { Suspense, useEffect, useState } from "react";
 
-// import io from "socket.io-client";
-
-// const socket = io("http://localhost:4001");
-
 export default function Home() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [isMultiStepProcessDone, _] = useSessionStorage(

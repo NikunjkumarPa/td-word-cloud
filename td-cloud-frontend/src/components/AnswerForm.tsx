@@ -86,7 +86,7 @@ const AnswerForm = () => {
               Your answers have been submitted successfully.
             </p>
           </div>
-        ) : (
+        ) : question.length ? (
           <>
             {/* Question */}
             <h1 className="text-4xl font-bold mb-8">{question}</h1>
@@ -148,6 +148,12 @@ const AnswerForm = () => {
                 </button>
               </div>
             </div>
+          </>
+        ) : (
+          <>
+            <h1 className="text-5xl font-semibold w-full animate-pulse">
+              Waiting for question...
+            </h1>
           </>
         )}
       </div>

@@ -12,10 +12,7 @@ const getWordFrequency = (words: string[] = []) => {
 };
 
 const WordCloud = ({ wordsArray }: { wordsArray: string[] }) => {
-  console.log("wordsArray===>", wordsArray);
-
   const svgRef = useRef<SVGSVGElement | null>(null);
-
   useEffect(() => {
     if (!svgRef.current) return;
 
@@ -25,12 +22,13 @@ const WordCloud = ({ wordsArray }: { wordsArray: string[] }) => {
       size: wordFrequency[word] * 20, // Size based on frequency
     }));
 
-    const width = 400;
-    const height = 250;
+    const width = window.screen.width - 150;
+    const height = window.screen.height / 2;
 
     const layout = cloud()
       .size([width, height])
       .words(words)
+      .canvas()
       .padding(5)
       .rotate(() => (Math.random() > 0.5 ? 0 : 90)) // 50% chance of rotation
       .fontSize((d) => d.size ?? 0)

@@ -88,7 +88,7 @@ io.on(connection, (socket) => {
     console.log(`All answers for ${questionId}: ${allAnswers}`);
 
     // Emit all answers to the client
-    io.emit(ANSWER_EMIT, allAnswers);
+    io.emit(ANSWER_EMIT, allAnswers, questionId);
   });
 
   socket.on("get_answers", async (questionId) => {
@@ -109,7 +109,7 @@ io.on(connection, (socket) => {
 app.get("/getAnswers", async (req, res) => {
   const questionid = req.query.questionid;
   const allAnswers = await redis.lrange(questionid, 1, -1);
-  res.json(allAnswers, questionid);
+  res.json({ allAnswers, questionid });
 });
 
 const PORT = process.env.SERVER_PORT || 4001;

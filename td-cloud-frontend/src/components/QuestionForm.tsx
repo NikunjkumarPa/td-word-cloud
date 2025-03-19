@@ -61,9 +61,16 @@ export default function QuestionForm({ socket }: QuestionForm) {
       setIsLoading(false);
     };
 
-    const updateAnswerCloud = (allAnswers: string[]) => {
+    const updateAnswerCloud = (allAnswers: string[], questionId: string) => {
       console.log("Answers updated:", allAnswers);
-      setAnswers(allAnswers);
+      console.log("questionId===>", questionId);
+      console.log("split==>", qrlink.split("=")[1]);
+      console.log(
+        "questionId === qrlink.split",
+        questionId === qrlink.split("=")[1]
+      );
+
+      if (questionId === qrlink.split("=")[1]) setAnswers(allAnswers);
     };
 
     socket?.on(QUESTION_EMIT, createNewQuestion);
@@ -73,7 +80,7 @@ export default function QuestionForm({ socket }: QuestionForm) {
       socket?.off(QUESTION_EMIT);
       socket?.off(ANSWER_EMIT);
     };
-  }, [socket]);
+  }, [socket, qrlink]);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -133,7 +140,7 @@ export default function QuestionForm({ socket }: QuestionForm) {
           </div>
         )}
         <WordCloud wordsArray={answers} />
-        {answers && answers.length > 0 && (
+        {/* {answers.length && (
           <div className="mt-8">
             <h2 className="text-2xl font-semibold mb-4">Answers</h2>
             <div className="bg-gray-50 p-4 rounded-lg">
@@ -149,7 +156,7 @@ export default function QuestionForm({ socket }: QuestionForm) {
               </ul>
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

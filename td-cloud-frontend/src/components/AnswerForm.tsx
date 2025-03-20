@@ -56,7 +56,7 @@ const AnswerForm = () => {
   console.log("question", question);
 
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center justify-center min-h-screen bg-white">
       <div className="bg-white rounded-lg shadow-lg p-8 w-full max-w-3xl">
         {/* Logo */}
         <div className="mb-6 flex justify-between">
@@ -65,7 +65,9 @@ const AnswerForm = () => {
               <div className="absolute bottom-0 left-0 w-10 h-8 bg-red-400 rounded-tl-md"></div>
               <div className="absolute top-0 right-0 w-10 h-12 bg-blue-500 rounded-br-md"></div>
             </div>
-            <span className="text-4xl font-bold ml-2">TD Cloud</span>
+            <span className="text-4xl font-bold text-gray-700 ml-2">
+              TD Cloud
+            </span>
           </div>
           {!question.length ? (
             <button
@@ -94,15 +96,19 @@ const AnswerForm = () => {
                 />
               </svg>
             </div>
-            <h2 className="text-3xl font-bold mb-4">Thank you!</h2>
-            <p className="text-lg text-gray-600">
+            <h2 className="text-3xl font-bold text-gray-700 mb-4">
+              Thank you!
+            </h2>
+            <p className="text-lg text-gray-700">
               Your answers have been submitted successfully.
             </p>
           </div>
         ) : question.length ? (
           <>
             {/* Question */}
-            <h1 className="text-4xl font-bold mb-8">{question}</h1>
+            <h1 className="text-4xl font-bold text-blue-600 mb-8">
+              {question}
+            </h1>
             <div>
               <div className="mb-4">
                 <div className="relative">
@@ -112,9 +118,10 @@ const AnswerForm = () => {
                     value={input1}
                     onChange={(e) => setInput1(e.target.value)}
                     maxLength={MAX_ANSWER_LENGTH}
-                    className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-6 bg-gray-100 rounded-lg text-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
                   />
-                  <span className="absolute right-4 top-6 text-gray-500">
+                  <span
+                    className="absolute right-4 top-6 text-gray-500">
                     {MAX_ANSWER_LENGTH - input1.length}
                   </span>
                 </div>
@@ -128,9 +135,10 @@ const AnswerForm = () => {
                     value={input2}
                     onChange={(e) => setInput2(e.target.value)}
                     maxLength={MAX_ANSWER_LENGTH}
-                    className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-6 bg-gray-100 rounded-lg text-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
                   />
-                  <span className="absolute right-4 top-6 text-gray-500">
+                  <span
+                    className="absolute right-4 top-6 text-gray-500">
                     {MAX_ANSWER_LENGTH - input2.length}
                   </span>
                 </div>
@@ -144,9 +152,10 @@ const AnswerForm = () => {
                     value={input3}
                     onChange={(e) => setInput3(e.target.value)}
                     maxLength={MAX_ANSWER_LENGTH}
-                    className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    className="w-full p-6 bg-gray-100 rounded-lg text-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
                   />
-                  <span className="absolute right-4 top-6 text-gray-500">
+                  <span
+                    className="absolute right-4 top-6 text-gray-500" >
                     {MAX_ANSWER_LENGTH - input3.length}
                   </span>
                 </div>
@@ -163,7 +172,7 @@ const AnswerForm = () => {
             </div>
           </>
         ) : (
-          <h1 className="text-3xl font-semibold w-full animate-pulse cursor-progress">
+          <h1 className="text-3xl font-semibold text-gray-700 w-full animate-pulse cursor-progress">
             Waiting for question... try after some time...
           </h1>
         )}

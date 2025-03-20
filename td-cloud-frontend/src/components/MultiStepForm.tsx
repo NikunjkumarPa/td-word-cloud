@@ -43,7 +43,9 @@ const MultiStepForm = ({ gotoDashboard }: MultiStepForm) => {
               <div className="absolute bottom-0 left-0 w-10 h-8 bg-red-400 rounded-tl-md"></div>
               <div className="absolute top-0 right-0 w-10 h-12 bg-blue-500 rounded-br-md"></div>
             </div>
-            <span className="text-4xl font-bold ml-2">TD Cloud</span>
+            <span className="text-4xl font-bold text-gray-700 ml-2">
+              TD Cloud
+            </span>
           </div>
         </div>
 

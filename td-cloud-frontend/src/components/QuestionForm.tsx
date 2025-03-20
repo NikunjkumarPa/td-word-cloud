@@ -89,11 +89,15 @@ export default function QuestionForm({ socket }: QuestionForm) {
               <div className="absolute bottom-0 left-0 w-10 h-8 bg-red-400 rounded-tl-md"></div>
               <div className="absolute top-0 right-0 w-10 h-12 bg-blue-500 rounded-br-md"></div>
             </div>
-            <span className="text-4xl font-bold ml-2">TD Cloud</span>
+            <span className="text-4xl font-bold text-gray-700 ml-2">
+              TD Cloud
+            </span>
           </div>
         </div>
         {!qrlink && (
-          <h1 className="text-3xl font-bold mb-6">Create a Question</h1>
+          <h1 className="text-3xl font-bold text-gray-700 mb-6">
+            Create a Question
+          </h1>
         )}
         {!qrlink ? (
           <form onSubmit={handleSubmit}>
@@ -105,7 +109,7 @@ export default function QuestionForm({ socket }: QuestionForm) {
                   onChange={(e) => setQuestion(e.target.value)}
                   placeholder="Enter your question"
                   maxLength={MAX_QUESTION_LENGTH}
-                  className="w-full p-6 bg-gray-100 rounded-lg text-xl focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
+                  className="w-full p-6 bg-gray-100 rounded-lg text-xl text-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 pr-10"
                 />
                 <span className="absolute right-4 top-6 text-gray-500">
                   {MAX_QUESTION_LENGTH - question.length}
@@ -132,7 +136,9 @@ export default function QuestionForm({ socket }: QuestionForm) {
             <h1 className="text-5xl text-blue-600 font-bold">{question}</h1>
             <p className="text-2xl text-gray-400 font-light">{`${response} Response`}</p>
             <div className="mt-8 flex flex-col items-center">
-              <h2 className="text-2xl font-semibold mb-4">Scan to Answer</h2>
+              <h2 className="text-2xl font-semibold text-gray-700 mb-4">
+                Scan to Answer
+              </h2>
               <div className="p-4 bg-white border border-gray-200 rounded-lg shadow-md">
                 <QRCode size={200} value={qrlink} />
               </div>
